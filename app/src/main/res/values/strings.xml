@@ -1,4 +1,28 @@
 <resources>
     <string name="app_name">kaska</string>
     <string name="default_web_client_id">YOUR_WEB_CLIENT_ID_HERE</string>
+    <string name="title_activity_image_ocr">image_ocr_activity</string>
+    <string name="title_activity_imageocractivity.java">imageocractivity.java</string>
+    <string name="title_activity_image_ocractivity">ImageOCRActivity</string>
+    <string name="title_activity_image_ocractivity.java">ImageOCRActivity.java</string>
+
+    <string name="app_name_">KASKA</string>
+    <string name="desc_menu_icon">Menu</string>
+    <string name="desc_settings_icon">Settings</string>
+    <string name="desc_document_illustration">Document Illustration</string>
+    <string name="desc_upload_button">Upload Image Button</string>
+    <string name="desc_preview_image">Preview Selected Image</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="upload_subtext">Tap to upload document for OCR</string>
+    <string name="view_all">View All</string>
+    <string name="tagline_text">Extract text from documents with ease</string>
+    <string name="your_documents">Your Documents</string>
+
+    <string name="clear">Clear</string>
+    <string name="black">Black</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="green">Green</string>
+
+
 </resources>

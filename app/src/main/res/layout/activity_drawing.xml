@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.cscorner.kaska.DrawingView
+        android:id="@+id/drawing_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tools_layout"
+        android:background="#FFFFFF" />
+
+    <LinearLayout
+        android:id="@+id/tools_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:padding="10dp"
+        android:background="#eeeeee">
+
+        <ImageButton
+            android:id="@+id/black_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#000000"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/black"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <ImageButton
+            android:id="@+id/red_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#FF0000"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/red"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <ImageButton
+            android:id="@+id/blue_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#2196F3"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/blue"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <ImageButton
+            android:id="@+id/green_btn"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:backgroundTint="#4CAF50"
+            android:background="@android:color/darker_gray"
+            android:contentDescription="@string/green"
+            android:focusable="true"
+            android:clickable="true" />
+
+        <Button
+            android:id="@+id/clear_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:text="@string/clear"
+            android:focusable="true"
+            android:clickable="true" />
+    </LinearLayout>
+</RelativeLayout>
