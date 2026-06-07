@@ -14,3 +14,11 @@ The React Compiler is not enabled on this template because of its impact on dev 
 ## Expanding the ESLint configuration
 
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
+## Deployment
+
+This project is configured to build as a static React + Vite website and deploy automatically to GitHub Pages on `main` branch updates.
+
+- Local production build: `npm run build`
+- The GitHub Actions workflow lives in `.github/workflows/deploy.yml`
+- Use GitHub Pages settings to publish the `gh-pages` deployment source created by the workflow
