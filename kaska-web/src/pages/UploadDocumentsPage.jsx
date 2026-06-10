@@ -181,7 +181,7 @@ const UploadDocumentsPage = () => {
 
           <Button
             startIcon={<ArrowBackIcon />}
-            onClick={() => navigate(-1)}
+            onClick={() => navigate("/ocr")}
             sx={{
               color: "rgba(255, 255, 255, 0.85)",
               textTransform: "none",
