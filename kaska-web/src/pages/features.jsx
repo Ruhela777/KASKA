@@ -1,17 +1,19 @@
-﻿import React from "react";
+﻿import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
   Container,
-  Grid,
-  Paper,
   Stack,
   Typography,
+  IconButton,
 } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import { useSwipeable } from "react-swipeable";
 
+// Asset Imports
 import kaskaLogoSmall from "../assets/kaska_logo_small.png";
 import ocrImage from "../assets/ocr.png";
 import microLearningImage from "../assets/micro_learning.png";
@@ -20,6 +22,9 @@ import quizImage from "../assets/quiz.png";
 
 const FeaturesPage = () => {
   const navigate = useNavigate();
+  const [currentFeature, setCurrentFeature] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const autoPlayTimer = useRef(null);
 
   const sections = [
     {
@@ -76,413 +81,427 @@ const FeaturesPage = () => {
     },
   ];
 
+  const nextFeature = () => {
+    setCurrentFeature((prev) => (prev === sections.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevFeature = () => {
+    setCurrentFeature((prev) => (prev === 0 ? sections.length - 1 : prev - 1));
+  };
+
+  useEffect(() => {
+    if (!isHovered) {
+      autoPlayTimer.current = setInterval(() => {
+        nextFeature();
+      }, 5000);
+    }
+
+    return () => {
+      if (autoPlayTimer.current) clearInterval(autoPlayTimer.current);
+    };
+  }, [isHovered]);
+
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: nextFeature,
+    onSwipedRight: prevFeature,
+    preventScrollOnSwipe: true,
+    trackMouse: true,
+  });
+
   return (
     <Box
       sx={{
-        position: "absolute",
-        inset: 0,
+        position: "relative",
         minHeight: "100vh",
+        height: "100vh", 
         width: "100vw",
-        minWidth: "100vw",
-        background: `
-          radial-gradient(circle at top left, rgba(56,178,172,0.22), transparent 30%),
-          radial-gradient(circle at bottom right, rgba(10,147,150,0.22), transparent 35%),
-          linear-gradient(135deg, #041C32 0%, #064663 45%, #0A9396 100%)
-        `,
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        overflowX: "hidden",
+        display: "flex",
+        flexDirection: "column",
+        // Background color update: Using 0496C7 and 0077B6 tones
+        background: `linear-gradient(-45deg, #0077B6, #0496C7, #06283D, #16213E, #0f172a)`,
+        backgroundSize: "400% 400%",
+        animation: "fluidBackground 15s ease infinite",
+        backgroundAttachment: "fixed",
+        overflow: "hidden", 
+
+        "&::-webkit-scrollbar": { display: "none" },
+        msOverflowStyle: "none",
+        scrollbarWidth: "none",
+
+        "@keyframes fluidBackground": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "@keyframes floatAnimation": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-12px)" },
+        },
+        "@keyframes driftParticles": {
+          "0%": { transform: "translate(0px, 0px) rotate(0deg) scale(1)" },
+          "50%": { transform: "translate(40px, -60px) rotate(180deg) scale(1.1)" },
+          "100%": { transform: "translate(0px, 0px) rotate(360deg) scale(1)" },
+        },
       }}
     >
-      {/* Background Blobs */}
+      {/* Aesthetic Blended Animated Background Orb */}
       <Box
         sx={{
           position: "absolute",
-          width: 400,
-          height: 400,
+          width: { xs: 350, md: 700 },
+          height: { xs: 350, md: 700 },
           borderRadius: "50%",
-          background: "rgba(255,255,255,0.04)",
-          top: -120,
-          left: -120,
-          filter: "blur(20px)",
-        }}
-      />
-
-      <Box
-        sx={{
-          position: "absolute",
-          width: 500,
-          height: 500,
-          borderRadius: "50%",
-          background: "rgba(255,255,255,0.03)",
-          bottom: -200,
-          right: -200,
-          filter: "blur(30px)",
-        }}
-      />
-
-      <Container
-        maxWidth={false}
-        sx={{
-          width: "100%",
-          maxWidth: "100%",
-          px: 0,
-          py: 4,
-          position: "relative",
+          background: "radial-gradient(circle, rgba(209,234,240,0.12) 0%, transparent 70%)", // Updated to D1EAF0 hint
+          top: "-15%",
+          left: "-10%",
+          filter: "blur(60px)",
+          pointerEvents: "none",
+          animation: "driftParticles 25s infinite ease-in-out",
           zIndex: 1,
-          mx: 0,
+        }}
+      />
+
+      {/* DISTINCT GLASSMORPHISM NAVBAR */}
+      <Box
+        component="nav"
+        sx={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          alignItems: "center",
+          height: { xs: 70, md: 80 },
+          bgcolor: "rgba(6, 40, 61, 0.55)", 
+          backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
+          
+          // Separating line updated to 0496C7
+          borderBottom: "2px solid rgba(4, 150, 199, 0.4)", 
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 10px rgba(4, 150, 199, 0.15)",
+          
+          zIndex: 100,
         }}
       >
-        {/* NAVBAR */}
-        <Paper
-          elevation={0}
+        <Container
+          maxWidth="lg"
           sx={{
-            position: "sticky",
-            top: 20,
-            zIndex: 100,
-            mb: 8,
-            px: 4,
-            py: 2,
-            borderRadius: 5,
-            backdropFilter: "blur(20px)",
-            background: "rgba(255,255,255,0.08)",
-            border: "1px solid rgba(255,255,255,0.12)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            px: { xs: 3, md: 4 },
+          }}
+        >
+          <Box sx={{ display: "flex", alignItems: "center", gap: 1.5 }}>
+            <Box
+              component="img"
+              src={kaskaLogoSmall}
+              alt="Kaska Logo"
+              sx={{ width: 38, height: 38, objectFit: "contain" }}
+            />
+            <Typography
+              sx={{
+                color: "#fff",
+                fontWeight: 800,
+                fontSize: "1.25rem",
+                letterSpacing: "0.1em",
+                textShadow: "0 2px 4px rgba(0,0,0,0.2)",
+              }}
+            >
+              KASKA
+            </Typography>
+          </Box>
+
+          <Stack direction="row" spacing={1.5}>
+            <Button
+              onClick={() => navigate("/login")}
+              sx={{
+                color: "rgba(255, 255, 255, 0.85)",
+                textTransform: "none",
+                fontWeight: 600,
+                px: 2.5,
+                fontSize: "0.9rem",
+                transition: "all 0.2s",
+                "&:hover": {
+                  color: "#fff",
+                  bgcolor: "rgba(255, 255, 255, 0.05)",
+                },
+              }}
+            >
+              Login
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => navigate("/signup")}
+              sx={{
+                bgcolor: "#D1EAF0", // Updated to light highlight tone
+                color: "#0077B6", // Dark deep accent contrast text
+                fontWeight: 700,
+                textTransform: "none",
+                px: 3,
+                borderRadius: 2,
+                boxShadow: "0 4px 14px rgba(209, 234, 240, 0.25)",
+                transition: "all 0.2s ease",
+                "&:hover": {
+                  bgcolor: "#ffffff",
+                  transform: "translateY(-1px)",
+                  boxShadow: "0 6px 18px rgba(209, 234, 240, 0.4)",
+                },
+              }}
+            >
+              Sign Up
+            </Button>
+          </Stack>
+        </Container>
+      </Box>
+
+      {/* HERO SECTION SLIDER CONTAINER */}
+      <Container
+        maxWidth="lg"
+        sx={{
+          px: { xs: 3, md: 4 },
+          pt: { xs: 12, md: 14 }, 
+          pb: { xs: 3, md: 4 },
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center", 
+          flexGrow: 1,
+          height: "100%",
+          position: "relative",
+          zIndex: 2,
+          overflow: "hidden", 
+        }}
+      >
+        {/* SLIDER WRAPPER */}
+        <Box
+          {...swipeHandlers}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          sx={{
+            position: "relative",
+            width: "100%",
+            margin: "auto 0",
+            cursor: "grab",
+            "&:active": { cursor: "grabbing" },
+            zIndex: 3,
           }}
         >
           <Box
+            key={currentFeature}
             sx={{
               display: "flex",
+              flexDirection: { xs: "column", md: "row" },
               alignItems: "center",
               justifyContent: "space-between",
+              gap: { xs: 4, md: 4 },
+              width: "100%",
+              animation: "heroFadeIn 0.55s cubic-bezier(0.25, 1, 0.5, 1) both",
+              "@keyframes heroFadeIn": {
+                "0%": { opacity: 0, transform: "translateX(25px)" },
+                "100%": { opacity: 1, transform: "translateX(0)" },
+              },
             }}
           >
+            {/* LEFT TEXT COMPONENT */}
             <Box
               sx={{
+                flex: { xs: "1 1 auto", md: "0 0 52%" }, 
+                width: "100%",
+                maxWidth: { md: 560 },
                 display: "flex",
+                flexDirection: "column",
+                order: { xs: 2, md: 1 },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#D1EAF0", // Main text header small label update
+                  fontWeight: 800,
+                  fontSize: { xs: "0.75rem", md: "0.85rem" }, 
+                  letterSpacing: ".2em",
+                  textTransform: "uppercase",
+                  mb: 0.5,
+                }}
+              >
+                {sections[currentFeature].title}
+              </Typography>
+
+              <Typography
+                component="h1"
+                sx={{
+                  fontSize: { xs: "1.5rem", sm: "1.85rem", md: "2.2rem" }, 
+                  fontWeight: 900,
+                  color: "#ffffff",
+                  lineHeight: 1.2,
+                  mb: 1.5,
+                  letterSpacing: "-0.015em",
+                }}
+              >
+                {sections[currentFeature].highlight}
+              </Typography>
+
+              <Typography
+                sx={{
+                  color: "rgba(255,255,255,0.85)",
+                  lineHeight: 1.55,
+                  fontSize: { xs: "0.9rem", md: "1rem" }, 
+                  mb: 2.5,
+                }}
+              >
+                {sections[currentFeature].description}
+              </Typography>
+
+              <Stack spacing={1} sx={{ mb: 3 }}>
+                {sections[currentFeature].bullets.map((bullet, idx) => (
+                  <Box
+                    key={idx}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 1.5,
+                    }}
+                  >
+                    <CheckCircleOutlineOutlinedIcon
+                      sx={{ color: "#D1EAF0", fontSize: { xs: "1rem", md: "1.15rem" } }} // Updated bullet check icons
+                    />
+                    <Typography
+                      sx={{
+                        color: "#ffffff",
+                        fontWeight: 500,
+                        fontSize: { xs: "0.88rem", md: "0.95rem" }, 
+                      }}
+                    >
+                      {bullet}
+                    </Typography>
+                  </Box>
+                ))}
+              </Stack>
+
+              <Button
+                variant="contained"
+                onClick={() => navigate(sections[currentFeature].route)}
+                sx={{
+                  width: "fit-content",
+                  bgcolor: "#D1EAF0", // Explore feature button update
+                  color: "#0077B6",
+                  px: 4.5,
+                  py: 1.2,
+                  borderRadius: 2,
+                  textTransform: "none",
+                  fontWeight: 800,
+                  fontSize: "0.9rem", 
+                  boxShadow: "0 4px 15px rgba(209,234,240,0.2)",
+                  "&:hover": {
+                    bgcolor: "#ffffff",
+                    transform: "translateY(-1px)",
+                    boxShadow: "0 6px 20px rgba(209,234,240,0.35)",
+                  },
+                  transition: "all 0.2s ease",
+                }}
+              >
+                Explore Feature
+              </Button>
+            </Box>
+
+            {/* RIGHT SIDE GRAPHIC BLOCK */}
+            <Box
+              sx={{
+                flex: { xs: "1 1 auto", md: "0 0 45%" }, 
+                display: "flex",
+                justifyContent: { xs: "center", md: "flex-end" },
                 alignItems: "center",
-                gap: 2,
+                width: "100%",
+                order: { xs: 1, md: 2 },
               }}
             >
               <Box
                 component="img"
-                src={kaskaLogoSmall}
-                alt="Kaska"
+                src={sections[currentFeature].image}
+                alt={sections[currentFeature].title}
                 sx={{
-                  width: 50,
-                  height: 50,
+                  width: "100%",
+                  maxWidth: { xs: 240, sm: 320, md: 410 },
+                  maxHeight: { xs: 200, md: 320 },
+                  objectFit: "contain",
+                  userSelect: "none",
+                  pointerEvents: "none",
+                  filter: "drop-shadow(0 20px 35px rgba(0,0,0,0.4)) drop-shadow(0 4px 10px rgba(0,0,0,0.25))",
+                  animation: "floatAnimation 4.5s ease-in-out infinite",
                 }}
               />
-
-              <Typography
-                sx={{
-                  color: "#fff",
-                  fontWeight: 800,
-                  fontSize: "1.3rem",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                KASKA
-              </Typography>
             </Box>
-
-            <Stack direction="row" spacing={2}>
-              <Button
-                onClick={() => navigate("/login")}
-                sx={{
-                  color: "#fff",
-                  textTransform: "none",
-                  fontWeight: 700,
-                }}
-              >
-                Login
-              </Button>
-
-              <Button
-                variant="contained"
-                onClick={() => navigate("/signup")}
-                sx={{
-                  bgcolor: "#fff",
-                  color: "#0A9396",
-                  fontWeight: 700,
-                  textTransform: "none",
-                  px: 4,
-                  borderRadius: 3,
-                  "&:hover": {
-                    bgcolor: "#f5f5f5",
-                  },
-                }}
-              >
-                Sign Up
-              </Button>
-            </Stack>
           </Box>
-        </Paper>
 
-        {/* HERO */}
-        <Box
-          sx={{
-            textAlign: "center",
-            color: "#fff",
-            mb: 10,
-          }}
-        >
-          <Typography
+          {/* FLOATING NAVIGATION ARROWS */}
+          <IconButton
+            onClick={prevFeature}
+            aria-label="Previous Slide"
             sx={{
-              fontSize: {
-                xs: "2.8rem",
-                md: "5rem",
+              position: "absolute",
+              left: { xs: -10, lg: -60 },
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "rgba(255,255,255,0.45)",
+              "&:hover": {
+                color: "#ffffff",
+                bgcolor: "rgba(255,255,255,0.08)",
               },
-              fontWeight: 900,
-              lineHeight: 1.05,
-              mb: 3,
+              width: 44,
+              height: 44,
+              zIndex: 10,
             }}
           >
-            Learn Smarter.
-            <br />
-            Create Faster.
-          </Typography>
+            <ChevronLeftIcon sx={{ fontSize: "2.4rem" }} />
+          </IconButton>
 
-          <Typography
+          <IconButton
+            onClick={nextFeature}
+            aria-label="Next Slide"
             sx={{
-              maxWidth: 850,
-              mx: "auto",
-              fontSize: "1.15rem",
-              lineHeight: 1.9,
-              color: "rgba(255,255,255,0.85)",
+              position: "absolute",
+              right: { xs: -10, lg: -60 },
+              top: "50%",
+              transform: "translateY(-50%)",
+              color: "rgba(255,255,255,0.45)",
+              "&:hover": {
+                color: "#ffffff",
+                bgcolor: "rgba(255,255,255,0.08)",
+              },
+              width: 44,
+              height: 44,
+              zIndex: 10,
             }}
           >
-            Experience intelligent OCR, diagram recognition,
-            micro-learning capsules, and interactive quizzes
-            designed to make learning more engaging and productive.
-          </Typography>
+            <ChevronRightIcon sx={{ fontSize: "2.4rem" }} />
+          </IconButton>
         </Box>
 
-        {/* FEATURES */}
-        <Stack spacing={6}>
-          {sections.map((section, index) => (
-            <Paper
-              key={section.title}
-              elevation={0}
+        {/* HERO PAGINATION INDICATORS */}
+        <Stack
+          direction="row"
+          spacing={1.2}
+          justifyContent="flex-start"
+          sx={{ mt: { xs: 4, md: 5 }, mb: 0 }}
+        >
+          {sections.map((_, index) => (
+            <Box
+              key={index}
+              onClick={() => setCurrentFeature(index)}
               sx={{
-                borderRadius: 6,
-                overflow: "hidden",
-                background: "rgba(255,255,255,0.96)",
-                backdropFilter: "blur(20px)",
-                transition: "all .35s ease",
-                boxShadow: "0 25px 60px rgba(0,0,0,.18)",
+                width: currentFeature === index ? 35 : 9,
+                height: 5,
+                borderRadius: 3,
+                cursor: "pointer",
+                transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
+                bgcolor:
+                  currentFeature === index ? "#D1EAF0" : "rgba(255,255,255,0.25)", // Updated pagination index indicators
                 "&:hover": {
-                  transform: "translateY(-10px)",
-                  boxShadow: "0 35px 80px rgba(0,0,0,.25)",
+                  bgcolor: currentFeature === index ? "#D1EAF0" : "rgba(255,255,255,0.5)",
                 },
               }}
-            >
-              <Grid
-                container
-                direction={index % 2 === 0 ? "row" : "row-reverse"}
-              >
-                {/* CONTENT */}
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                  sx={{
-                    p: { xs: 4, md: 6 },
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "3rem",
-                      fontWeight: 900,
-                      color: "#0A9396",
-                      mb: 1,
-                      lineHeight: 1,
-                    }}
-                  >
-                    {`0${index + 1}`}
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      color: "#0A9396",
-                      fontWeight: 700,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.15em",
-                      mb: 2,
-                    }}
-                  >
-                    {section.title}
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      fontSize: {
-                        xs: "2rem",
-                        md: "2.8rem",
-                      },
-                      fontWeight: 800,
-                      color: "#102A43",
-                      lineHeight: 1.2,
-                      mb: 2,
-                    }}
-                  >
-                    {section.highlight}
-                  </Typography>
-
-                  <Typography
-                    sx={{
-                      color: "#486581",
-                      lineHeight: 1.9,
-                      fontSize: "1.05rem",
-                      mb: 4,
-                    }}
-                  >
-                    {section.description}
-                  </Typography>
-
-                  <Stack spacing={2}>
-                    {section.bullets.map((bullet) => (
-                      <Box
-                        key={bullet}
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1.5,
-                        }}
-                      >
-                        <CheckCircleOutlineOutlinedIcon
-                          sx={{
-                            color: "#0A9396",
-                          }}
-                        />
-
-                        <Typography
-                          sx={{
-                            fontWeight: 600,
-                            color: "#102A43",
-                          }}
-                        >
-                          {bullet}
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Stack>
-
-                  <Button
-                    variant="text"
-                    endIcon={<ArrowForwardIosIcon />}
-                    onClick={() => navigate(section.route)}
-                    sx={{
-                      mt: 4,
-                      width: "fit-content",
-                      color: "#0A9396",
-                      fontWeight: 700,
-                      textTransform: "none",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    Explore Feature
-                  </Button>
-                </Grid>
-
-                {/* IMAGE */}
-                <Grid
-                  item
-                  xs={12}
-                  md={6}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    p: { xs: 4, md: 5 },
-                    background:
-                      "linear-gradient(135deg, rgba(10,147,150,0.08), rgba(56,178,172,0.15))",
-                  }}
-                >
-                  <Box
-                    component="img"
-                    src={section.image}
-                    alt={section.title}
-                    sx={{
-                      width: "100%",
-                      maxWidth: 500,
-                      transition: ".4s",
-                      filter:
-                        "drop-shadow(0 25px 45px rgba(0,0,0,.18))",
-                      "&:hover": {
-                        transform: "scale(1.05)",
-                      },
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            </Paper>
+            />
           ))}
         </Stack>
-
-        {/* CTA */}
-        <Paper
-          elevation={0}
-          sx={{
-            mt: 8,
-            p: { xs: 4, md: 6 },
-            borderRadius: 6,
-            textAlign: "center",
-            background:
-              "linear-gradient(135deg,#0A9396 0%,#38B2AC 100%)",
-            color: "#fff",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: {
-                xs: "2rem",
-                md: "3rem",
-              },
-              fontWeight: 800,
-              mb: 2,
-            }}
-          >
-            Ready to Start Learning?
-          </Typography>
-
-          <Typography
-            sx={{
-              maxWidth: 700,
-              mx: "auto",
-              lineHeight: 1.8,
-              opacity: 0.95,
-              mb: 4,
-            }}
-          >
-            Unlock OCR extraction, diagram intelligence,
-            micro-learning capsules, and engaging quizzes
-            in one seamless platform.
-          </Typography>
-
-          <Button
-            variant="contained"
-            size="large"
-            onClick={() => navigate("/signup")}
-            sx={{
-              bgcolor: "#fff",
-              color: "#0A9396",
-              fontWeight: 800,
-              px: 5,
-              py: 1.5,
-              borderRadius: 3,
-              textTransform: "none",
-              "&:hover": {
-                bgcolor: "#f5f5f5",
-              },
-            }}
-          >
-            Get Started
-          </Button>
-        </Paper>
       </Container>
     </Box>
   );
