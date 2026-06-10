@@ -7,7 +7,7 @@ const MainPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const timer = setTimeout(() => navigate("/ocr"), 10000);
+    const timer = setTimeout(() => navigate("/ocr"), 3000);
     return () => clearTimeout(timer);
   }, [navigate]);
 
