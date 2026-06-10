@@ -38,7 +38,7 @@ const FeaturesPage = () => {
         "Smart layout detection",
         "Exportable editable results",
       ],
-      route: "/ocr",
+      route: "/upload", // Updated to point to UploadDocumentsPage
     },
     {
       title: "Micro-Learning Capsules",
@@ -51,7 +51,7 @@ const FeaturesPage = () => {
         "Quick review mode",
         "Perfect for exam preparation",
       ],
-      route: "/microlearning",
+      route: "/upload", // Updated to point to UploadDocumentsPage
     },
     {
       title: "Diagram Recognition",
@@ -64,7 +64,7 @@ const FeaturesPage = () => {
         "Editable output",
         "Supports mind maps and charts",
       ],
-      route: "/diagram",
+      route: "/upload", // Updated to point to UploadDocumentsPage
     },
     {
       title: "Quiz Splash Experience",
@@ -77,7 +77,7 @@ const FeaturesPage = () => {
         "Progress tracking",
         "Learn with confidence",
       ],
-      route: "/quiz",
+      route: "/upload", // Updated to point to UploadDocumentsPage
     },
   ];
 
@@ -117,7 +117,6 @@ const FeaturesPage = () => {
         width: "100vw",
         display: "flex",
         flexDirection: "column",
-        // Background color update: Using 0496C7 and 0077B6 tones
         background: `linear-gradient(-45deg, #0077B6, #0496C7, #06283D, #16213E, #0f172a)`,
         backgroundSize: "400% 400%",
         animation: "fluidBackground 15s ease infinite",
@@ -151,7 +150,7 @@ const FeaturesPage = () => {
           width: { xs: 350, md: 700 },
           height: { xs: 350, md: 700 },
           borderRadius: "50%",
-          background: "radial-gradient(circle, rgba(209,234,240,0.12) 0%, transparent 70%)", // Updated to D1EAF0 hint
+          background: "radial-gradient(circle, rgba(209,234,240,0.12) 0%, transparent 70%)",
           top: "-15%",
           left: "-10%",
           filter: "blur(60px)",
@@ -175,11 +174,8 @@ const FeaturesPage = () => {
           bgcolor: "rgba(6, 40, 61, 0.55)", 
           backdropFilter: "blur(14px)",
           WebkitBackdropFilter: "blur(14px)",
-          
-          // Separating line updated to 0496C7
           borderBottom: "2px solid rgba(4, 150, 199, 0.4)", 
           boxShadow: "0 4px 20px rgba(0, 0, 0, 0.3), 0 1px 10px rgba(4, 150, 199, 0.15)",
-          
           zIndex: 100,
         }}
       >
@@ -234,8 +230,8 @@ const FeaturesPage = () => {
               variant="contained"
               onClick={() => navigate("/signup")}
               sx={{
-                bgcolor: "#D1EAF0", // Updated to light highlight tone
-                color: "#0077B6", // Dark deep accent contrast text
+                bgcolor: "#D1EAF0",
+                color: "#0077B6",
                 fontWeight: 700,
                 textTransform: "none",
                 px: 3,
@@ -315,7 +311,7 @@ const FeaturesPage = () => {
             >
               <Typography
                 sx={{
-                  color: "#D1EAF0", // Main text header small label update
+                  color: "#D1EAF0",
                   fontWeight: 800,
                   fontSize: { xs: "0.75rem", md: "0.85rem" }, 
                   letterSpacing: ".2em",
@@ -362,7 +358,7 @@ const FeaturesPage = () => {
                     }}
                   >
                     <CheckCircleOutlineOutlinedIcon
-                      sx={{ color: "#D1EAF0", fontSize: { xs: "1rem", md: "1.15rem" } }} // Updated bullet check icons
+                      sx={{ color: "#D1EAF0", fontSize: { xs: "1rem", md: "1.15rem" } }}
                     />
                     <Typography
                       sx={{
@@ -382,7 +378,7 @@ const FeaturesPage = () => {
                 onClick={() => navigate(sections[currentFeature].route)}
                 sx={{
                   width: "fit-content",
-                  bgcolor: "#D1EAF0", // Explore feature button update
+                  bgcolor: "#D1EAF0",
                   color: "#0077B6",
                   px: 4.5,
                   py: 1.2,
@@ -494,7 +490,7 @@ const FeaturesPage = () => {
                 cursor: "pointer",
                 transition: "all 0.35s cubic-bezier(0.4, 0, 0.2, 1)",
                 bgcolor:
-                  currentFeature === index ? "#D1EAF0" : "rgba(255,255,255,0.25)", // Updated pagination index indicators
+                  currentFeature === index ? "#D1EAF0" : "rgba(255,255,255,0.25)",
                 "&:hover": {
                   bgcolor: currentFeature === index ? "#D1EAF0" : "rgba(255,255,255,0.5)",
                 },
