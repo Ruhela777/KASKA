@@ -15,9 +15,13 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 // Asset Import (Matches Features Page Navbar)
 import kaskaLogoSmall from "../assets/kaska_logo_small.png";
 
+const CLIENT_ID = "431091486612-mier4k6idim1aiqs089mmti4eh15tq5a.apps.googleusercontent.com";
+const API_KEY = "AIzaSyDc7my-wd1b82mhiHgp0uUw8nyoYC1ncrA";
+
 const UploadDocumentsPage = () => {
   const navigate = useNavigate();
   const [dragActive, setDragActive] = useState(false);
+  const [authToken, setAuthToken] = useState(null);
 
   // Handle local file selection
   const handleFileChange = (e) => {
@@ -47,9 +51,56 @@ const UploadDocumentsPage = () => {
     }
   };
 
-  // Mock Google Drive Picker initialization
+  // Google Picker Callback handling
+  const pickerCallback = (data) => {
+    if (data.action === window.google.picker.Action.PICKED) {
+      const file = data.docs[0];
+      console.log("Selected Cloud File Details:", file);
+      alert(`Selected file from Google Drive for OCR: ${file.name}`);
+    }
+  };
+
+  // Instantiates Google Cloud Resource Picker Layout View
+  const createPicker = (token) => {
+    if (window.google && window.google.picker) {
+      const picker = new window.google.picker.PickerBuilder()
+        .addView(window.google.picker.ViewId.DOCS)
+        .setOAuthToken(token)
+        .setDeveloperKey(API_KEY)
+        .setCallback(pickerCallback)
+        .build();
+
+      picker.setVisible(true);
+    } else {
+      alert("Google Picker API failed to initialize. Check network script imports.");
+    }
+  };
+
+  // Authenticates & Requests Access tokens directly via OAuth2 client
   const handleGoogleDriveClick = () => {
-    alert("Connecting to Google Drive API Picker for OCR Selection...");
+    if (!window.google || !window.google.accounts) {
+      alert("Google Identity Platform Library not loaded yet.");
+      return;
+    }
+
+    // Reuse valid token instance if already verified within the app state instance session
+    if (authToken) {
+      window.gapi.load("picker", () => createPicker(authToken));
+      return;
+    }
+
+    const tokenClient = window.google.accounts.oauth2.initTokenClient({
+      client_id: CLIENT_ID,
+      scope: "https://www.googleapis.com/auth/drive.readonly",
+      callback: (tokenResponse) => {
+        if (tokenResponse && tokenResponse.access_token) {
+          setAuthToken(tokenResponse.access_token);
+          window.gapi.load("picker", () => createPicker(tokenResponse.access_token));
+        }
+      },
+    });
+
+    tokenClient.requestAccessToken();
   };
 
   return (
